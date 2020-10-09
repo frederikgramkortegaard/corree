@@ -29,7 +29,7 @@ success, result = rapidy.parse_args(
     'name': 'johndoe',
     'age': 42,
     'domain-name': 'python.org',
-    '--likes-cake': True,
+    'likes-cake': True,
     'foods': ['banana', 'pineapple']
 }
 ```
