@@ -33,6 +33,6 @@ success, result = rapidy.parse_args(
     'likes-cake': True,
     'foods': ['banana', 'pineapple']
 }
-``
+```
 ## TODO
 use singular _type_ for a single argument, [_type_] for any number of arguments and [_type_, _type_] for specific argument counts
