@@ -16,7 +16,7 @@ declared_args = {
 },
 
 # This would be sys.argv[1:] usually, the parser handles
-# both strings, as well as lists of strings as input
+# both strings as well as lists of strings as input
 given_input = "-name johndoe -age 42 --domain-name python.org --likes-cake -foods banana pineapple"
 
 # Parse input
