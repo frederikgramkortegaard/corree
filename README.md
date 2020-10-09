@@ -1,6 +1,6 @@
 # Rapidy
 
-Ease, simple and lightweight command line argument parser.
+Simple and lightweight command line argument parser with type validation.
 
 ```python
 """ Rapidy Usecase Example """
