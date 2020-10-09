@@ -25,5 +25,11 @@ success, result = rapidy.parse_args(
 
 # Output Dictionary
 >> result
-{'name': 'johndoe', 'age': 42, 'domain-name': 'python.org', '--likes-cake': True, 'foods': ['banana', 'pineapple']}
+{
+    'name': 'johndoe',
+    'age': 42,
+    'domain-name': 'python.org',
+    '--likes-cake': True,
+    'foods': ['banana', 'pineapple']
+}
 ```
