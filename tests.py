@@ -79,4 +79,18 @@ cases = [
         "--help",
         False,
     ),
+    (
+        {
+            "name": [list],
+        },
+        "-name [hello]",
+        True,
+    ),
+    (
+        {
+            "name": [list],
+        },
+        "-name [hello, world]",
+        False,
+    ),
 ]
