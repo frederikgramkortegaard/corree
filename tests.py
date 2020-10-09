@@ -4,6 +4,13 @@
 cases = [
     (
         {
+            "names": [list],
+        },
+        "-names [john, doe]",
+        True,
+    ),
+    (
+        {
             "name": [str],
             "foods": [str, str],
             "age": [int],
@@ -91,6 +98,6 @@ cases = [
             "name": [list],
         },
         "-name [hello, world]",
-        False,
+        True,
     ),
 ]

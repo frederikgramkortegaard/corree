@@ -1,18 +1,19 @@
 """ Easily define and parse command line arguments using dictionaries and types """
 
-
+import re
 import sys
 from typing import *
 from collections import defaultdict
 
 
-def _lex(text: str) -> Iterable[str]:
+def _lex(text: Union[str, List[str]]) -> Iterable[str]:
     """Returns a whitespace-delimited list of strings
     from the given text argument
     """
-
-    tokens = text.split(" ") if text.__contains__(" ") else text
-    return list(filter(lambda x: x != "", tokens))
+    if type(text) == list:
+        text = " ".join(text)
+    toks = [tok for tok in re.findall("(\[.*\]|\S*)", text) if tok != ""]
+    return toks
 
 
 def parse_args(
@@ -34,8 +35,9 @@ def parse_args(
 
         # Handle help request
         if token == "-help" or token == "--help":
-            print(f"Expected or Valid Arguments:")
-            print("\n".join([f" >> {key}: {value}" for key, value in args.items()]))
+            if not silent:
+                print(f"Expected or Valid Arguments:")
+                print("\n".join([f" >> {key}: {value}" for key, value in args.items()]))
             success = False
             break
 
