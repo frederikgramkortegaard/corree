@@ -34,10 +34,3 @@ success, result = rapidy.parse_args(
     'foods': ['banana', 'pineapple']
 }
 ```
-
-Most of the standard Python types work:
-- str
-- int
-- list
-- dict
-- tuple
