@@ -15,7 +15,8 @@ declared_args = {
     "likes-cake": bool,
 },
 
-# This would be sys.argv[1:] usually
+# This would be sys.argv[1:] usually, the parser handles
+# both strings, as well as lists of strings as input
 given_input = "-name johndoe -age 42 --domain-name python.org --likes-cake -foods banana pineapple"
 
 # Parse input
