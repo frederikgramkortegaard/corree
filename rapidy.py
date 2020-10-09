@@ -32,12 +32,14 @@ def parse_args(
         # Find a flag
         token = tokens[curser]
 
+        # Handle help request
         if token == "-help" or token == "--help":
             print(f"Expected or Valid Arguments:")
             print("\n".join([f" >> {key}: {value}" for key, value in args.items()]))
             success = False
             break
 
+        # We expect a flag as token, assert that this is the case
         if token[0:2] == "--":
             offset = 2
         elif token[0] == "-":
@@ -70,9 +72,11 @@ def parse_args(
             success = False
             break
 
+        # Find arguments for flag
         for enum, argument in enumerate(args[token[offset:]]):
             curser += 1
 
+            # Expected argument, got flag
             if tokens[curser].startswith("-"):
                 if not silent:
                     print(
@@ -81,6 +85,7 @@ def parse_args(
                 success = False
                 break
 
+            # Assert that argument has expected type
             try:
                 new_args[token[offset:]].append(argument(tokens[curser]))
             except ValueError as e:
@@ -91,6 +96,7 @@ def parse_args(
                 success = False
                 break
 
+            # Unpack single arguments encapsulated in a list
             if len(args[token[offset:]]) == 1:
                 new_args[token[offset:]] = new_args[token[offset:]][0]
 
@@ -101,11 +107,13 @@ def parse_args(
 
 if __name__ == "__main__":
 
+    # Setup testing arguments
     test_args = {"run-test": bool, "silent": bool}
     success, args = parse_args(sys.argv[1:], test_args)
 
-    test_silent = args["silent"]
+    # Run test cases
     if success and args["run-test"] == True:
+        test_silent = args["silent"]
 
         print("Entering Test Mode:\n ")
 
