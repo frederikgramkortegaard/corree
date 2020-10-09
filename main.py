@@ -59,7 +59,7 @@ def parse_args(
 
         # If flag is a bool, don't look for arguments
         if args[token[offset:]] == bool:
-            new_args[token] = True
+            new_args[token[offset:]] = True
             curser += 1
             continue
 
@@ -104,8 +104,8 @@ if __name__ == "__main__":
     test_args = {"run-test": bool, "silent": bool}
     success, args = parse_args(sys.argv[1:], test_args)
 
-    test_silent = args["-silent"]
-    if success and args["--run-test"] == True:
+    test_silent = args["silent"]
+    if success and args["run-test"] == True:
 
         print("Entering Test Mode:\n ")
 

@@ -10,7 +10,7 @@ cases = [
             "domain-name": [str],
             "likes-cake": bool,
         },
-        "-name johndoe   -age 42 --domain-name python.org --likes-cake -foods banana pineapple",
+        "-name johndoe -age 42 --domain-name python.org --likes-cake -foods banana pineapple",
         True,
     ),
     (
@@ -22,7 +22,7 @@ cases = [
             "likes-cake": bool,
         },
         "--name johndoe   -age 42 --domain-name python.org --likes-cake -foods banana pineapple",
-        False,
+        True,
     ),
     (
         {
