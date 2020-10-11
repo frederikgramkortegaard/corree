@@ -10,12 +10,14 @@ class case:
     args: dict
     output: Any
     success: bool
+    name: str = field(default=None)
 
 
 cases: list = list()
 
 cases.append(
     case(
+        name="Test Infinite Words",
         inp="-words foo bar monty python",
         args={"words": [str]},
         output={"words": ["foo", "bar", "monty", "python"]},
