@@ -168,7 +168,7 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
             else:
                 new_args[arg] = None
 
-    print(new_args)
+    logging.info(f"New Arguments Output:\n > {dict(new_args)}")
     logging.info(f"Finished parsing input")
     return success, new_args
 

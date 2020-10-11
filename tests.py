@@ -94,3 +94,43 @@ cases.append(
         success=False,
     )
 )
+
+cases.append(
+    case(
+        name="Test Float Typecasting",
+        inp="--float-val 1.244",
+        args={"float-val": float},
+        output={"float-val": 1.244},
+        success=True,
+    )
+)
+
+cases.append(
+    case(
+        name="Test bool Typecasting",
+        inp="--float-val",
+        args={"float-val": bool},
+        output={"float-val": True},
+        success=True,
+    )
+)
+
+cases.append(
+    case(
+        name="Test unspecified single argument flag",
+        inp="--float-val 1.55",
+        args={"float-val": float, "nothing": int},
+        output={"float-val": 1.55, "nothing": None},
+        success=True,
+    )
+)
+
+cases.append(
+    case(
+        name="Test unspecified multiple argument flag",
+        inp="--float-val 1.55",
+        args={"float-val": float, "int-vals": [int]},
+        output={"float-val": 1.55, "int-vals": []},
+        success=True,
+    )
+)
