@@ -111,6 +111,10 @@ def parse_args(
 
             # Expected argument, got flag
             if tokens[curser].startswith("-"):
+                if inf_args:
+                    curser -= 1
+                    break
+
                 if not silent:
                     print(
                         f"Not enough arguments supplied to flag '{token}', flag '{tokens[curser]}' followed"
