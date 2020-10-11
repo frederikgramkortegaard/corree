@@ -11,14 +11,16 @@ declared_args = {
     "age": int,
     "name": str,
     "foods": [str],
+    "numbers": [int],
     "domain-name":str,
     "likes-cake": bool,
-    "IP-PORT":  [str, int]
+    "IP-PORT":  [str, int],
 },
 
 # This would be sys.argv[1:] usually, the parser handles
 # both strings as well as lists of strings as input
-given_input = "-name johndoe -age 42 --domain-name python.org --likes-cake -foods banana pineapple, pizza, oreos, --IP-PORT 192.0.0.1 8080"
+given_input = """-name johndoe -age 42 --domain-name python.org --likes-cake /
+-foods banana pineapple, pizza, oreos, --IP-PORT 192.0.0.1 8080 -numbers 1 2 3 4"""
 
 # Parse input
 success, result = rapidy.parse_args(
@@ -28,11 +30,12 @@ success, result = rapidy.parse_args(
 # Output Dictionary
 >> result
 {
-    'name': 'johndoe',
     'age': 42,
+    'name': 'johndoe',
+    'foods': ['banana', 'pineapple', 'pizza', 'oreos'],
+    'numbers': [1, 2, 3, 4],
     'domain-name': 'python.org',
     'likes-cake': True,
-    'foods': ['banana', 'pineapple', 'pizza', 'oreos'],
     'IP-PORT': ["192.0.0.1", 8080]
 }
 ```
