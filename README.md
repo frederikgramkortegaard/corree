@@ -15,7 +15,8 @@ declared_args = {
     "likes-cake": bool,
 },
 
-# This would be sys.argv[1:] usually
+# This would be sys.argv[1:] usually, the parser handles
+# both strings as well as lists of strings as input
 given_input = "-name johndoe -age 42 --domain-name python.org --likes-cake -foods banana pineapple"
 
 # Parse input
@@ -33,3 +34,5 @@ success, result = rapidy.parse_args(
     'foods': ['banana', 'pineapple']
 }
 ```
+## TODO
+use singular _type_ for a single argument, [_type_] for any number of arguments and [_type_, _type_] for specific argument counts
