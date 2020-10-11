@@ -29,11 +29,11 @@ success, result = rapidy.parse_args(
 # Output Dictionary
 >> result
 {
-    'name': 'johndoe',
     'age': 42,
+    'name': 'johndoe',
+    'foods': ['banana', 'pineapple', 'pizza', 'oreos'],
     'domain-name': 'python.org',
     'likes-cake': True,
-    'foods': ['banana', 'pineapple', 'pizza', 'oreos'],
     'IP-PORT': ["192.0.0.1", 8080]
 }
 ```
