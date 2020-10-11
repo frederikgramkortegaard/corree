@@ -1,4 +1,4 @@
-""" """
+""" Test-Cases to be used in rapidy.py when run with flag '--run-tests' """
 
 from dataclasses import dataclass, field
 from typing import Any
@@ -52,5 +52,45 @@ cases.append(
         args={"ages": [int]},
         output={"ages": [1]},
         success=True,
+    )
+)
+
+cases.append(
+    case(
+        name="Test Infinite Integers with 0 arguments given",
+        inp="-ages",
+        args={"ages": [int]},
+        output={"ages": []},
+        success=True,
+    )
+)
+
+cases.append(
+    case(
+        name="Test Multiple Expected Argument Types",
+        inp="--IP-PORT 192.0.0.1 8080",
+        args={"IP-PORT": [str, int]},
+        output={"IP-PORT": ["192.0.0.1", 8080]},
+        success=True,
+    )
+)
+
+cases.append(
+    case(
+        name="Test Infinite Strings with 0 arguments given",
+        inp="--foods",
+        args={"foods": [str]},
+        output={"foods": []},
+        success=True,
+    )
+)
+
+cases.append(
+    case(
+        name="Test Two Expected Arguments But One Given",
+        inp="--foods pizza",
+        args={"foods": [str, str]},
+        output={"foods": []},
+        success=False,
     )
 )

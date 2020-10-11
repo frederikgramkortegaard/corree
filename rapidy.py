@@ -2,8 +2,11 @@
 
 import re
 import sys
+import logging
 from typing import *
 from collections import defaultdict
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 def _lex(text: Union[str, List[str]]) -> Iterable[str]:
@@ -18,14 +21,11 @@ def _lex(text: Union[str, List[str]]) -> Iterable[str]:
     return toks
 
 
-def parse_args(
-    text: str, args: Dict[str, Union[bool, List[Any]]], silent: bool = True
-) -> Dict[str, Any]:
+def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, Any]:
     """Identifies arguments, converts them to the expected types
     and combines them in a dictionary with their flag as the key
     """
-
-    new_args: Dict[str, Union[bool, List[Any]]] = defaultdict(list)
+    new_args: Dict[str, Any] = defaultdict(list)
     tokens: List[str] = _lex(text)
     success: bool = True
     inf_args: bool = False
@@ -35,7 +35,8 @@ def parse_args(
 
         # Find a flag
         token = tokens[curser]
-        # Handle help request
+
+        # Handle arguments help request
         if token == "-help" or token == "--help":
             if not silent:
                 print(f"Expected or Valid Arguments:")
@@ -49,24 +50,21 @@ def parse_args(
         elif token[0] == "-":
             offset = 1
         else:
-            if not silent:
-                print(
-                    f"token number [{curser}] with value '{token}' - is not expected as an argument, nor is it defined as a flag"
-                )
+            logging.error(
+                f"token number [{curser}] with value '{token}' - is not expected as an argument, nor is it defined as a flag"
+            )
             success = False
             break
 
         # If flag is not valid, exit.
         if token[offset:] not in args:
-            if not silent:
-                print(f"flag '{token}' is not a valid option, see  --help")
+            logging.error(f"flag '{token}' is not a valid option, see  --help")
             success = False
             break
 
         # If flag is a bool, don't look for arguments
         if args[token[offset:]] == bool:
-            if not silent:
-                print(f"flag '{token}' is a bool, don't look for arguments")
+            logging.info(f"flag '{token}' is a bool, don't look for arguments")
             new_args[token[offset:]] = True
             curser += 1
             continue
@@ -75,8 +73,9 @@ def parse_args(
 
         # Flag only takes a single argument
         if type(args[token[offset:]]) != list:
-            if not silent:
-                print("Flag is only Looking for a single argument")
+            logging.info(
+                f"Flag '{token[offset:]}' is only Looking for a single argument"
+            )
             num_of_args = 1
 
             # Set the expected argument type
@@ -84,23 +83,25 @@ def parse_args(
 
         # Flag takes more than a single arg
         elif type(args[token[offset:]]) == list:
+            logging.info(f"Flag '{token[offset:]}' takes more than a single argument")
             num_of_args = len(args[token[offset:]])
-
-        # Ensure enough arguments are supplied
-        if num_of_args + curser >= len(tokens):
-            if not silent:
-                print(f"Not enough arguments given to flag '{token}'")
-            success = False
-            break
 
         # Flag takes any number of args
         if type(args[token[offset:]]) == list and num_of_args == 1:
             inf_args = True
-            if not silent:
-                print(f"Setting flag '{token}' to take infinite arguments")
+            logging.info(f"Setting flag '{token}' to take infinite arguments")
 
             # Set the expected argument type
+            logging.info(
+                f"Setting expected argument type for all arguments to {args[token[offset:]][0]}"
+            )
             argument = args[token[offset:]][0]
+
+        # Ensure enough arguments are supplied
+        if num_of_args + curser >= len(tokens) and not inf_args:
+            logging.error(f"Not enough arguments given to flag '{token}'")
+            success = False
+            break
 
         # Find argument(s) for flag
         idx: int = 0
@@ -110,62 +111,75 @@ def parse_args(
             # Find current arguments expected type
             # If more than one was specified
             if not inf_args and num_of_args > 1:
+                logging.info(
+                    f"Expecting next argument to be of type {args[token[offset:]][idx]}"
+                )
                 argument = args[token[offset:]][idx]
 
             # Expected argument, got flag
             if tokens[curser].startswith("-"):
                 if inf_args:
                     curser -= 1
+                    logging.info(
+                        f"Found all arguments pertaining to flag {token[offset:]}"
+                    )
                     break
 
-                if not silent:
-                    print(
-                        f"Not enough arguments supplied to flag '{token}', flag '{tokens[curser]}' followed"
-                    )
+                logging.error(
+                    f"Not enough arguments supplied to flag '{token}', flag '{tokens[curser]}' followed"
+                )
                 success = False
                 break
 
-            # Assert that argument has expected type
+            # Cast argument to expected type
             try:
 
                 cast_arg = argument(tokens[curser])
                 new_args[token[offset:]].append(cast_arg)
 
-                if not silent:
-                    print(
-                        f"Arguments for flag '{token[offset:]}' are now {new_args[token[offset:]]}"
-                    )
+                logging.info(f"Argument '{cast_arg}' found for flag '{token[offset:]}'")
+                logging.info(
+                    f"Arguments for flag '{token[offset:]}' are now {new_args[token[offset:]]}"
+                )
 
             except ValueError as e:
-                if not silent:
-                    print(
-                        f"Wrong argument type for argument with value '{tokens[curser]}', expected type of '{argument}' but got type '{type(tokens[curser])}'"
-                    )
+                logging.error(
+                    f"Wrong argument type for argument with value '{tokens[curser]}', expected type of '{argument}' but got type '{type(tokens[curser])}'"
+                )
                 success = False
                 break
 
             idx += 1
+        # Unpack Expected Single Arguments From List Wrapper
         if (
             num_of_args == 1
             and len(new_args[token[offset:]]) == 1
             and type(args[token[offset:]]) != list
         ):
+            logging.info(f"Unpacking wrapped argument {args[token[offset:]]}")
             new_args[token[offset:]] = new_args[token[offset:]][0]
 
         curser += 1
 
+    for arg in args:
+        if new_args[arg] == []:
+            if type(args[arg]) == list:
+                new_args[arg] = list()
+            else:
+                new_args[arg] = None
+
+    print(new_args)
+    logging.info(f"Finished parsing input")
     return success, new_args
 
 
 if __name__ == "__main__":
 
     # Setup testing arguments
-    test_args = {"run-test": bool, "silent": bool}
-    success, args = parse_args(sys.argv[1:], test_args, silent=True)
-
+    test_args = {"run-tests": bool}
+    success, args = parse_args(sys.argv[1:], test_args)
     # Run test cases
-    if success and args["run-test"] == True:
-        test_silent = args["silent"]
+    if success and args["run-tests"] == True:
 
         print("Entering Test Mode:\n ")
 
@@ -174,15 +188,17 @@ if __name__ == "__main__":
 
             for enum, case in enumerate(cases):
 
-                success, args = parse_args(case.inp, case.args, silent=test_silent)
                 if case.name != None:
-                    print(f" --- '{case.name}' --- ")
+                    print(f" --- '{case.name}' --- \n <Parser Log")
+
+                success, args = parse_args(case.inp, case.args)
+                print("/>")
                 print(
-                    f"""Test case [{enum}] gave the following results:
+                    f"""\nTest case [{enum}] gave the following results:
     > matching success expectations: {success == case.success},
     > matching output expectations: {args == case.output}
                 \n"""
                 )
 
         except ImportError:
-            print(" >> Could not import ./tests.py")
+            logging.error(" >> Could not import ./tests.py")
