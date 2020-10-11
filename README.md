@@ -51,6 +51,7 @@ IP-PORT: [str, int] # means a single str and a single int argument
 ```
 
 ## Unspecified Arguments
+
 If a flag was not given any arguments, its value in the resulting output arguments dictionary would be an empty initialiser of its type.
 
 ### Examples
@@ -80,7 +81,10 @@ True,
 }
 
 """
-If a flag **explicitly** takes a number of arguments and none were given, the resulting value in the output dictionary would be an empty list, however the _success_ bool would be set to false
+If a flag **explicitly** takes a number of arguments and none were given,
+the resulting value in the output dictionary
+would be an empty list, however the _success_
+bool would be set to false
 """
 
 # Declare wanted flags, args and types
