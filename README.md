@@ -2,6 +2,7 @@
 
 Simple and lightweight command line argument parser with type validation.
 
+## Example
 ```python
 """ Rapidy Usecase Example """
 import rapidy
