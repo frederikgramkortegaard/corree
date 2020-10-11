@@ -8,16 +8,17 @@ import rapidy
 
 # Declare wanted flags, args and types
 declared_args = {
-    "name": [str],
-    "foods": [str, str],
-    "age": [int],
-    "domain-name": [str],
+    "age": int,
+    "name": str,
+    "foods": [str],
+    "domain-name":str,
     "likes-cake": bool,
+    "IP-PORT":  [str, int]
 },
 
 # This would be sys.argv[1:] usually, the parser handles
 # both strings as well as lists of strings as input
-given_input = "-name johndoe -age 42 --domain-name python.org --likes-cake -foods banana pineapple"
+given_input = "-name johndoe -age 42 --domain-name python.org --likes-cake -foods banana pineapple, pizza, oreos, --IP-PORT 192.0.0.1 8080"
 
 # Parse input
 success, result = rapidy.parse_args(
@@ -31,8 +32,7 @@ success, result = rapidy.parse_args(
     'age': 42,
     'domain-name': 'python.org',
     'likes-cake': True,
-    'foods': ['banana', 'pineapple']
+    'foods': ['banana', 'pineapple', 'pizza', 'oreos'],
+    'IP-PORT': ["192.0.0.1", 8080]
 }
 ```
-## TODO
-use singular _type_ for a single argument, [_type_] for any number of arguments and [_type_, _type_] for specific argument counts
