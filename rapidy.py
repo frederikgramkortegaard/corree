@@ -69,12 +69,14 @@ def parse_args(
                 print(f"flag '{token}' is a bool, don't look for arguments")
             new_args[token[offset:]] = True
             curser += 1
+            continue
 
         num_of_args: int = -1
 
         # Flag only takes a single argument
         if type(args[token[offset:]]) != list:
-            print("Looking for single arg")
+            if not silent:
+                print("Flag is only Looking for a single argument")
             num_of_args = 1
 
             # Set the expected argument type
@@ -94,7 +96,8 @@ def parse_args(
         # Flag takes any number of args
         if type(args[token[offset:]]) == list and num_of_args == 1:
             inf_args = True
-            print(f"Setting flag '{token}' to take infinite arguments")
+            if not silent:
+                print(f"Setting flag '{token}' to take infinite arguments")
 
             # Set the expected argument type
             argument = args[token[offset:]][0]
@@ -142,6 +145,13 @@ def parse_args(
                 break
 
             idx += 1
+        if (
+            num_of_args == 1
+            and len(new_args[token[offset:]]) == 1
+            and type(args[token[offset:]]) != list
+        ):
+            new_args[token[offset:]] = new_args[token[offset:]][0]
+
         curser += 1
 
     return success, new_args
@@ -151,7 +161,7 @@ if __name__ == "__main__":
 
     # Setup testing arguments
     test_args = {"run-test": bool, "silent": bool}
-    success, args = parse_args(sys.argv[1:], test_args, silent=False)
+    success, args = parse_args(sys.argv[1:], test_args, silent=True)
 
     # Run test cases
     if success and args["run-test"] == True:
@@ -163,9 +173,14 @@ if __name__ == "__main__":
             from tests import cases
 
             for enum, case in enumerate(cases):
-                success, args = parse_args(case[1], case[0], silent=test_silent)
+
+                success, args = parse_args(case.inp, case.args, silent=test_silent)
                 print(
-                    f"Case [{enum}]: {'Failed' if success != case[2] else 'Sucessful'}"
+                    f"""\nTest case [{enum}] gave the following results:
+    > matching success expectations: {success == case.success},
+    > matching output expectations: {args == case.output}
+                """
                 )
+
         except ImportError:
             print(" >> Could not import ./tests.py")
