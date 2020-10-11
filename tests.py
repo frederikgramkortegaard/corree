@@ -134,3 +134,13 @@ cases.append(
         success=True,
     )
 )
+
+cases.append(
+    case(
+        name="Test flag that takes two arguments when given zero arguments ",
+        inp="-names",
+        args={"names": [str, str]},
+        output={"names": []},
+        success=False,
+    )
+)
