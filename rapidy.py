@@ -178,10 +178,12 @@ if __name__ == "__main__":
     # Setup testing arguments
     test_args = {"run-tests": bool}
     success, args = parse_args(sys.argv[1:], test_args)
+
     # Run test cases
     if success and args["run-tests"] == True:
 
         print("Entering Test Mode:\n ")
+        tests_succeded: bool = True
 
         try:
             from tests import cases
@@ -200,5 +202,11 @@ if __name__ == "__main__":
                 \n"""
                 )
 
+                if success != case.success or args != case.output:
+                    tests_succeded = False
+
         except ImportError:
             logging.error(" >> Could not import ./tests.py")
+
+    if not tests_succeded:
+        logging.error("TESTS WERE NOT SUCCESFULL")

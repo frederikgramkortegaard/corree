@@ -39,3 +39,11 @@ success, result = rapidy.parse_args(
     'IP-PORT': ["192.0.0.1", 8080]
 }
 ```
+
+## Specifying number of arguments
+```python
+one_name: str # represents a single str argument for the flag
+inf_names: [str] # means infinite arguments of type str
+two_names: [str, str] # means exactly two args of type str
+IP-PORT: [str, int] # means a single str and a single int argument
+```
