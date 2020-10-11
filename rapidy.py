@@ -176,7 +176,7 @@ if __name__ == "__main__":
 
                 success, args = parse_args(case.inp, case.args, silent=test_silent)
                 if case.name != None:
-                    print(f" --- Name of case: '{case.name}' --- ")
+                    print(f" --- '{case.name}' --- ")
                 print(
                     f"""Test case [{enum}] gave the following results:
     > matching success expectations: {success == case.success},

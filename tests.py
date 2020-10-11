@@ -17,7 +17,7 @@ cases: list = list()
 
 cases.append(
     case(
-        name="Test Infinite Words",
+        name="Test Infinite Strings",
         inp="-words foo bar monty python",
         args={"words": [str]},
         output={"words": ["foo", "bar", "monty", "python"]},
@@ -27,6 +27,7 @@ cases.append(
 
 cases.append(
     case(
+        name="Test Single String",
         inp="-name jack",
         args={"name": str},
         output={"name": "jack"},
@@ -36,6 +37,7 @@ cases.append(
 
 cases.append(
     case(
+        name="Test Infinite Integers",
         inp="-ages 1 2 3 4 5",
         args={"ages": [int]},
         output={"ages": [1, 2, 3, 4, 5]},
@@ -45,6 +47,7 @@ cases.append(
 
 cases.append(
     case(
+        name="Test Infinite Integers with 1 argument given",
         inp="-ages 1",
         args={"ages": [int]},
         output={"ages": [1]},
