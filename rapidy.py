@@ -32,7 +32,7 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
     tokens: List[str] = _lex(text)
     success: bool = True
     inf_args: bool = False
-    curser: int = 0
+    cursor: int = 0
 
     # TODO // this should be done some other way
     # Set default bool value to be false
@@ -41,15 +41,15 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
             new_args[key] = False
 
     # Handle help requests
-    if len(tokens) > 0 and (tokens[curser] == "-help" or tokens[curser] == "--help"):
+    if len(tokens) > 0 and (tokens[cursor] == "-help" or tokens[cursor] == "--help"):
         print(f"Expected or Valid Arguments:")
         print("\n".join([f" >> {key}: {value}" for key, value in args.items()]))
         return (True, dict())
 
     # Iterate through given tokens
-    while curser < len(tokens):
+    while cursor < len(tokens):
 
-        token = tokens[curser]
+        token = tokens[cursor]
 
         # We expect a flag as token, ensure that this is the case
         if token[0:2] == "--":
@@ -58,7 +58,7 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
             offset = 1
         else:
             logging.error(
-                f"token number [{curser}] with value '{token}' - is not expected as an argument, nor is it defined as a flag"
+                f"token number [{cursor}] with value '{token}' - is not expected as an argument, nor is it defined as a flag"
             )
             success = False
             break
@@ -79,7 +79,7 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
             if args[token] == bool:
                 logging.info(f"flag '{token}' is a bool, don't look for arguments")
                 new_args[token] = True
-                curser += 1
+                cursor += 1
                 continue
 
             logging.info(f"Flag '{token}' is only Looking for a single argument")
@@ -104,15 +104,15 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
                 logging.info(f"Flag '{token}' takes more than a single argument")
 
         # Ensure enough arguments are supplied
-        if num_of_args + curser >= len(tokens) and not inf_args:
+        if num_of_args + cursor >= len(tokens) and not inf_args:
             logging.error(f"Not enough arguments given to flag '{token}'")
             success = False
             break
 
         # Find argument(s) for flag
         idx: int = 0
-        while (idx < num_of_args or inf_args) and curser < len(tokens) - 1:
-            curser += 1
+        while (idx < num_of_args or inf_args) and cursor < len(tokens) - 1:
+            cursor += 1
 
             # Find type of current expected argument
             if not inf_args and num_of_args > 1:
@@ -122,14 +122,14 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
                 argument = args[token][idx]
 
             # Expected argument but got flag
-            if tokens[curser].startswith("-"):
+            if tokens[cursor].startswith("-"):
                 if inf_args:
-                    curser -= 1
+                    cursor -= 1
                     logging.info(f"Found all arguments pertaining to flag {token}")
                     break
 
                 logging.error(
-                    f"Not enough arguments supplied to flag '{token}', flag '{tokens[curser]}' followed"
+                    f"Not enough arguments supplied to flag '{token}', flag '{tokens[cursor]}' followed"
                 )
                 success = False
                 break
@@ -137,7 +137,7 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
             # Cast argument to expected type
             try:
 
-                cast_arg = argument(tokens[curser])
+                cast_arg = argument(tokens[cursor])
                 new_args[token].append(cast_arg)
 
                 logging.info(f"Argument '{cast_arg}' found for flag '{token}'")
@@ -145,7 +145,7 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
 
             except ValueError as e:
                 logging.error(
-                    f"Wrong argument type for argument with value '{tokens[curser]}', expected type of '{argument}' but got type '{type(tokens[curser])}'"
+                    f"Wrong argument type for argument with value '{tokens[cursor]}', expected type of '{argument}' but got type '{type(tokens[cursor])}'"
                 )
                 success = False
                 break
@@ -157,7 +157,7 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
             logging.info(f"Unpacking wrapped argument {args[token]}")
             new_args[token] = new_args[token][0]
 
-        curser += 1
+        cursor += 1
 
     # INCOMPLETE // hacky default value solutions
     for arg in args:
