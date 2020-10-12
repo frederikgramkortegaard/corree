@@ -136,10 +136,8 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
 
             # Cast argument to expected type
             try:
-
                 cast_arg = argument(tokens[cursor])
                 new_args[token].append(cast_arg)
-
                 logging.info(f"Argument '{cast_arg}' found for flag '{token}'")
 
             except ValueError as e:
@@ -152,7 +150,7 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
             idx += 1
 
         # Unpack Expected Single Arguments From List Wrapper
-        if num_of_args == 1 and type(args[token]) != list:
+        if type(args[token]) != list:
             logging.info(f"Unpacking wrapped argument {args[token]}")
             new_args[token] = new_args[token][0]
 
