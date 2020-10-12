@@ -32,7 +32,13 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
     success: bool = True
     cursor: int = 0
 
-    # Set default bool value to be false
+    # Handle help requests
+    if len(tokens) > 0 and (tokens[cursor] == "-help" or tokens[cursor] == "--help"):
+        print(f"Expected or Valid Arguments:")
+        print("\n".join([f" >> {key}: {value}" for key, value in args.items()]))
+        return (True, dict())
+
+    # Set default values
     for key, value in args.items():
 
         if type(value) in [list, tuple]:
@@ -44,12 +50,6 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
         else:
             logging.error(f"Unsupported Expected Argument Type {type(value)}, {value}")
             return (False, dict())
-
-    # Handle help requests
-    if len(tokens) > 0 and (tokens[cursor] == "-help" or tokens[cursor] == "--help"):
-        print(f"Expected or Valid Arguments:")
-        print("\n".join([f" >> {key}: {value}" for key, value in args.items()]))
-        return (True, dict())
 
     # Iterate through given tokenslist
     while cursor < len(tokens):
