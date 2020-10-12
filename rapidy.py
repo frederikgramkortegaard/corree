@@ -30,8 +30,8 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
 
     new_args: Dict[str, Any] = defaultdict(list)
     tokens: List[str] = _lex(text)
-    success: bool = True
     inf_args: bool = False
+    success: bool = True
     cursor: int = 0
 
     # TODO // this should be done some other way
@@ -68,7 +68,7 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
 
         # Flag is not valid
         if token not in args:
-            logging.error(f"flag '{token}' is not a valid option, see  --help")
+            logging.error(f"flag '{token}' is not a valid option, see --help")
             success = False
             break
 
@@ -141,7 +141,6 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
                 new_args[token].append(cast_arg)
 
                 logging.info(f"Argument '{cast_arg}' found for flag '{token}'")
-                logging.info(f"Arguments for flag '{token}' are now {new_args[token]}")
 
             except ValueError as e:
                 logging.error(
@@ -201,9 +200,3 @@ if __name__ == "__main__":
 > matching output expectations: {args == case.output}
             \n"""
             )
-
-            if success != case.success or args != case.output:
-                tests_succeded = False
-
-    if not tests_succeded:
-        logging.error("TESTS WERE NOT SUCCESFULL")
