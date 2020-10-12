@@ -1,4 +1,4 @@
-# Corree
+# Corree  --  CLA-Parser
 
 Simple and lightweight command line argument parser with type validation.
 
