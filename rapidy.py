@@ -96,8 +96,7 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
             argument = args[token]
 
         # Flag takes more than a single arg
-        elif type(args[token]) in [list, tuple]:
-
+        else:
             num_of_args = len(args[token])
 
             # Flag takes any number of args
