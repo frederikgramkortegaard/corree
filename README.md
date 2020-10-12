@@ -4,8 +4,8 @@ Simple and lightweight command line argument parser with type validation.
 
 ## Example
 ```python
-""" Rapidy Usecase Example """
-import rapidy
+""" Corree Usecase Example """
+import corree
 
 # Declare wanted flags, args and types
 declared_args = {
@@ -24,7 +24,7 @@ given_input = """-name johndoe -age 42.2 --domain-name python.org --likes-cake /
 -foods banana pineapple pizza oreos --IP-PORT 192.0.0.1 8080 -numbers 1 2 3 4"""
 
 # Parse input
-success, result = rapidy.parse_args(
+success, result = corree.parse_args(
     declared_args, given_input
 )
 
