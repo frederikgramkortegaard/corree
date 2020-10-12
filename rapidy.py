@@ -8,8 +8,6 @@ from collections import defaultdict
 
 logging.basicConfig(level=logging.DEBUG)
 
-## TODO // Handle all iters dynamically instead of hardcoding list support
-
 
 def _lex(text: Union[str, List[str]]) -> Iterable[str]:
     """Returns a whitespace-delimited list of strings
@@ -44,7 +42,7 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
         elif value in [str, float, int]:
             new_args[key] = None
         else:
-            logging.error(f"Unrecognized Expected Argument Type {type(value)}, {value}")
+            logging.error(f"Unsupported Expected Argument Type {type(value)}, {value}")
             return (False, dict())
 
     # Handle help requests
@@ -202,7 +200,6 @@ if __name__ == "__main__":
 
             success, args = parse_args(case.inp, case.args)
 
-            print(args)
             print(
                 f"""\nTest case [{enum}] gave the following results:
 > matching success expectations: {success == case.success},
