@@ -51,12 +51,12 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
 
         token = tokens[cursor]
 
-        # We expect a flag as token, ensure that this is the case
-        if token[0:2] == "--":
-            offset = 2
-        elif token[0] == "-":
-            offset = 1
-        else:
+        # Find number of prefixed dashes
+        offset: int = 0
+        while token[offset:].startswith("-"):
+            offset += 1
+
+        if offset == 0:
             logging.error(
                 f"token number [{cursor}] with value '{token}' - is not expected as an argument, nor is it defined as a flag"
             )
