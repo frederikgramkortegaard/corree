@@ -34,23 +34,22 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
     inf_args: bool = False
     curser: int = 0
 
+    # TODO // this should be done some other way
     # Set default bool value to be false
     for key, value in args.items():
         if value == bool:
             new_args[key] = False
 
+    # Handle help requests
+    if len(tokens) > 0 and (tokens[curser] == "-help" or tokens[curser] == "--help"):
+        print(f"Expected or Valid Arguments:")
+        print("\n".join([f" >> {key}: {value}" for key, value in args.items()]))
+        return (True, dict())
+
     # Iterate through given tokens
     while curser < len(tokens):
 
         token = tokens[curser]
-
-        # Handle arguments help request
-        if token == "-help" or token == "--help":
-            if not silent:
-                print(f"Expected or Valid Arguments:")
-                print("\n".join([f" >> {key}: {value}" for key, value in args.items()]))
-            success = False
-            break
 
         # We expect a flag as token, ensure that this is the case
         if token[0:2] == "--":
