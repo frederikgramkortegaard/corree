@@ -117,6 +117,17 @@ cases.append(
 
 cases.append(
     case(
+        name="Test bool default to false",
+        inp="",
+        args={"float-val": bool},
+        output={"float-val": False},
+        success=True,
+    )
+)
+
+
+cases.append(
+    case(
         name="Test unspecified single argument flag",
         inp="--float-val 1.55",
         args={"float-val": float, "nothing": int},
@@ -142,25 +153,5 @@ cases.append(
         args={"names": [str, str]},
         output={"names": []},
         success=False,
-    )
-)
-
-cases.append(
-    case(
-        name="Test flag that takes unsupported argument types ",
-        inp="-names {test: 1}  ",
-        args={"names": dict},
-        output={"names": None},
-        success=False,
-    )
-)
-
-cases.append(
-    case(
-        name="Test flag that takes Tuple argument type ",
-        inp="-names (1,2,3) ",
-        args={"names": tuple},
-        output={"names": ()},
-        success=True,
     )
 )
