@@ -163,14 +163,6 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
 
         cursor += 1
 
-    # INCOMPLETE // hacky default value solutions
-    for arg in args:
-        if new_args[arg] == []:
-            if type(args[arg]) == list:
-                new_args[arg] = list()
-            else:
-                new_args[arg] = None
-
     logging.info(f"Finished parsing input")
     return success, new_args
 
