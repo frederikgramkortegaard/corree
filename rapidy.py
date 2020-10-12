@@ -8,6 +8,8 @@ from collections import defaultdict
 
 logging.basicConfig(level=logging.DEBUG)
 
+## TODO // Handle all iters dynamically instead of hardcoding list support
+
 
 def _lex(text: Union[str, List[str]]) -> Iterable[str]:
     """Returns a whitespace-delimited list of strings
@@ -25,6 +27,7 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
     """Identifies arguments, converts them to the expected types
     and combines them in a dictionary with their flag as the key
     """
+
     new_args: Dict[str, Any] = defaultdict(list)
     tokens: List[str] = _lex(text)
     success: bool = True
@@ -62,20 +65,22 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
             success = False
             break
 
-        # If flag is a bool, don't look for arguments
-        if args[token[offset:]] == bool:
-            logging.info(f"flag '{token}' is a bool, don't look for arguments")
-            new_args[token[offset:]] = True
-            curser += 1
-            continue
-
         num_of_args: int = -1
 
-        # Flag only takes a single argument
+        # Flag does not take multiple arguments
         if type(args[token[offset:]]) != list:
+
+            # If flag is a bool, don't look for arguments
+            if args[token[offset:]] == bool:
+                logging.info(f"flag '{token}' is a bool, don't look for arguments")
+                new_args[token[offset:]] = True
+                curser += 1
+                continue
+
             logging.info(
                 f"Flag '{token[offset:]}' is only Looking for a single argument"
             )
+
             num_of_args = 1
 
             # Set the expected argument type
@@ -83,19 +88,20 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
 
         # Flag takes more than a single arg
         elif type(args[token[offset:]]) == list:
-            logging.info(f"Flag '{token[offset:]}' takes more than a single argument")
+
             num_of_args = len(args[token[offset:]])
 
-        # Flag takes any number of args
-        if type(args[token[offset:]]) == list and num_of_args == 1:
-            inf_args = True
-            logging.info(f"Setting flag '{token}' to take infinite arguments")
-
-            # Set the expected argument type
-            logging.info(
-                f"Setting expected argument type for all arguments to {args[token[offset:]][0]}"
-            )
-            argument = args[token[offset:]][0]
+            # Flag takes any number of args
+            if num_of_args == 1:
+                inf_args = True
+                logging.info(
+                    f"Setting flag '{token}' to take infinite arguments of type {args[token[offset:]][0]}"
+                )
+                argument = args[token[offset:]][0]
+            else:
+                logging.info(
+                    f"Flag '{token[offset:]}' takes more than a single argument"
+                )
 
         # Ensure enough arguments are supplied
         if num_of_args + curser >= len(tokens) and not inf_args:
@@ -150,6 +156,7 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
                 break
 
             idx += 1
+
         # Unpack Expected Single Arguments From List Wrapper
         if (
             num_of_args == 1

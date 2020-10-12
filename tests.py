@@ -144,3 +144,23 @@ cases.append(
         success=False,
     )
 )
+
+cases.append(
+    case(
+        name="Test flag that takes unsupported argument types ",
+        inp="-names {test: 1}  ",
+        args={"names": dict},
+        output={"names": None},
+        success=False,
+    )
+)
+
+cases.append(
+    case(
+        name="Test flag that takes Tuple argument type ",
+        inp="-names (1,2,3) ",
+        args={"names": tuple},
+        output={"names": ()},
+        success=True,
+    )
+)
