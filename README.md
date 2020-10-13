@@ -1,4 +1,4 @@
-# Rapidy
+# Corree
 
 Simple and lightweight command line argument parser with type validation.
 
@@ -97,7 +97,7 @@ declared_args = {
 given_input = ""
 
 # Parse input
-success, result = rapidy.parse_args(
+success, result = corree.parse_args(
     declared_args, given_input
 )
 
