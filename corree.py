@@ -26,7 +26,7 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
     and combines them in a dictionary with their flag as the key
     """
 
-    new_args: Dict[str, Any] = defaultdict(list)
+    new_args: Dict[str, Any] = defaultdict()
     tokens: List[str] = _lex(text)
     inf_args: bool = False
     success: bool = True
@@ -41,14 +41,16 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
     # Set default values
     for key, value in args.items():
 
-        if type(value) in [list, tuple]:
+        if type(value) == list:
             new_args[key] = type(value)()
         elif value == bool:
             new_args[key] = False
         elif value in [str, float, int]:
             new_args[key] = None
         else:
-            logging.error(f"Unsupported Expected Argument Type {type(value)}, {value}")
+            logging.error(
+                f"Unsupported Expected Argument Type '{type(value)} - {value}'"
+            )
             return (False, dict())
 
     # Iterate through tokens
@@ -78,7 +80,7 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
             break
 
         # Flag does not take multiple arguments
-        if type(args[token]) not in [list, tuple]:
+        if type(args[token]) != list:
 
             # Flag is a bool, don't look for arguments
             if args[token] == bool:
@@ -145,12 +147,11 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
                 # Add found argument to output dictionary
                 if argument == list:
                     new_args[token].append(cast_arg)
-                if argument == tuple:
-                    new_args[token].add(cast_arg)
                 else:
                     new_args[token] = cast_arg
 
                 logging.info(f"Argument '{cast_arg}' found for flag '{token}'")
+                print("args are now ", new_args)
 
             except ValueError as e:
                 logging.error(

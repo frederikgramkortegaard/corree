@@ -155,22 +155,3 @@ cases.append(
         success=False,
     )
 )
-
-cases.append(
-    case(
-        name="Test flag that takes a tuple with infinite arguments ",
-        inp="-names michael",
-        args={"names": (str)},
-        output={"names": ("michael")},
-        success=True,
-    )
-)
-cases.append(
-    case(
-        name="Test flag that takes a tuple with two arguments ",
-        inp="-IP-PORT 192.0.0.1 8080",
-        args={"IP-PORT": (str, int)},
-        output={"IP-PORT": ("192.0.0.1", 8080)},
-        success=True,
-    )
-)
