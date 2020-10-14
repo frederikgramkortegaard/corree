@@ -8,6 +8,8 @@ from collections import defaultdict
 
 logging.basicConfig(level=logging.DEBUG)
 
+supported_single_arg_types = [bool, int, float, str]
+
 
 def _lex(text: Union[str, List[str]]) -> Iterable[str]:
     """Returns a whitespace-delimited list of strings
@@ -21,12 +23,10 @@ def _lex(text: Union[str, List[str]]) -> Iterable[str]:
     return toks
 
 
-def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, Any]:
-    """Identifies arguments, converts them to the expected types
-    and combines them in a dictionary with their flag as the key
-    """
-
-    new_args: Dict[str, Any] = defaultdict()
+def parse_args(
+    text: str, args: Dict[str, Union[bool, List[Any]]]
+) -> Tuple[bool, Dict[str, Any]]:
+    new_args: Dict[str, Any] = defaultdict(list)
     tokens: List[str] = _lex(text)
     inf_args: bool = False
     success: bool = True
@@ -38,14 +38,23 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
         print("\n".join([f" >> {key}: {value}" for key, value in args.items()]))
         return (True, dict())
 
+    # Improvement // the following section is really ugly, maybe we could optimize it?
+
     # Set default values
     for key, value in args.items():
-
         if type(value) == list:
+            # Ensure only valid expected arguments inside of lists
+            for expected_arg_type in value:
+                if expected_arg_type not in supported_single_arg_types:
+                    logging.error(
+                        f"Unsupported Expected Argument Type '{expected_arg_type}' found inside list for flag '{key}'"
+                    )
+                    return (False, dict())
+
             new_args[key] = type(value)()
         elif value == bool:
             new_args[key] = False
-        elif value in [str, float, int]:
+        elif value in supported_single_arg_types[1:]:
             new_args[key] = None
         else:
             logging.error(
@@ -79,6 +88,7 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
             success = False
             break
 
+        print(type(args[token]))
         # Flag does not take multiple arguments
         if type(args[token]) != list:
 
@@ -110,7 +120,7 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
                 logging.info(f"Flag '{token}' takes {num_of_args} arguments")
 
         # Ensure enough arguments are supplied
-        if num_of_args + cursor >= len(tokens) and not inf_args:
+        if not inf_args and num_of_args + cursor >= len(tokens):
             logging.error(f"Not enough arguments given to flag '{token}'")
             success = False
             break
@@ -145,7 +155,8 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
                 cast_arg: Any = argument(tokens[cursor])
 
                 # Add found argument to output dictionary
-                if argument == list:
+
+                if inf_args:
                     new_args[token].append(cast_arg)
                 else:
                     new_args[token] = cast_arg

@@ -155,3 +155,24 @@ cases.append(
         success=False,
     )
 )
+
+cases.append(
+    case(
+        name="Test unexpected argument type inside of list",
+        inp="-names",
+        args={"names": [str, dict]},
+        output={"names": {}},
+        success=False,
+    )
+)
+
+
+cases.append(
+    case(
+        name="Test list of bools",
+        inp="-names True False",
+        args={"names": [bool, bool]},
+        output={"names": [True, False]},
+        success=True,
+    )
+)
