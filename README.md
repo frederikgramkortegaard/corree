@@ -1,6 +1,8 @@
 # Corree
 
-Simple and lightweight command line argument parser with **type validation**.
+## "Ask and you shall receive" - style command-line argument parser. 
+
+
 
 ## Example
 ```python
