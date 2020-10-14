@@ -166,36 +166,3 @@ def parse_args(text: str, args: Dict[str, Union[bool, List[Any]]]) -> Dict[str, 
 
     logging.info(f"Finished parsing input")
     return success, new_args
-
-
-if __name__ == "__main__":
-
-    # Setup testing arguments
-    test_args = {"run-tests": bool}
-    success, args = parse_args(sys.argv[1:], test_args)
-
-    # Run test cases
-    if success and args["run-tests"] == True:
-
-        print("Entering Test Mode:\n ")
-        tests_succeded: bool = True
-
-        try:
-            from tests import cases
-        except ImportError:
-            logging.error(" >> Could not import ./tests.py")
-            exit()
-
-        for enum, case in enumerate(cases):
-
-            if case.name != None:
-                print(f" --- '{case.name}' --- ")
-
-            success, args = parse_args(case.inp, case.args)
-            print(args)
-            print(
-                f"""\nTest case [{enum}] gave the following results:
-> matching success expectations: {success == case.success},
-> matching output expectations: {args == case.output}
-            \n"""
-            )
