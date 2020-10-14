@@ -1,6 +1,6 @@
 # Corree
 
-Simple and lightweight command line argument parser with type validation.
+Simple and lightweight command line argument parser with **type validation**.
 
 ## Example
 ```python
@@ -37,6 +37,6 @@ True,
     'foods': ['banana', 'pineapple', 'pizza', 'oreos'],
     'numbers': [1, 2, 3, 4],
     'domain-name': 'python.org',
-    'likes-cake': True,
+    'likes-cake': True,''''
     'IP-PORT': ["192.0.0.1", 8080]
 }
