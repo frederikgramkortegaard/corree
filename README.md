@@ -1,4 +1,4 @@
-# Corree
+# corree
 Command-line arguments in an _**"Ask and you shall receive"**_ fashion.
 
 Pythons standard [argparser](https://docs.python.org/3/library/argparse.html) isn't very pretty, nor is it short, compact or to the point.  This tool is meant to fill the gap between "quick-and-dirty" and overly complex. 
@@ -13,7 +13,7 @@ However simple it is, this parser _does_ support type validation. Combine this w
 
 ## Example
 ```python
-""" Corree Usecase Example """
+""" corree Usecase Example """
 import corree
 
 # Declare wanted flags, args and types
