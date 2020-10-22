@@ -176,3 +176,24 @@ cases.append(
         success=True,
     )
 )
+
+
+cases.append(
+    case(
+        name="Test Dict as expected args wrapper",
+        inp="-names True False",
+        args={"names": {bool: bool}},
+        output={},
+        success=False,
+    )
+)
+
+cases.append(
+    case(
+        name="Test Tuple as expected args wrapper",
+        inp="-names True False",
+        args={"names": (bool, str)},
+        output={},
+        success=False,
+    )
+)

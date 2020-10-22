@@ -21,6 +21,8 @@ def _lex(text: Union[str, List[str]]) -> Iterable[str]:
     toks: List[str] = [tok for tok in re.findall("(\[.*\]|\S*)", text) if tok != ""]
 
     return toks
+
+
 # Writing this comment using EMACS
 
 
