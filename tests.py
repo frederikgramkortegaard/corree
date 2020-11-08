@@ -197,3 +197,22 @@ cases.append(
         success=False,
     )
 )
+
+cases.append(
+    case(
+        name="Test Optional Argument",
+        inp="-name",
+        args={"name": str},
+        output={"name": None},
+        success=True,
+    )
+)
+cases.append(
+    case(
+        name="Test Optional Argument Using List",
+        inp="-name",
+        args={"name": [str]},
+        output={"name": []},
+        success=True,
+   )
+)

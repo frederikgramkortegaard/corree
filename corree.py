@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.DEBUG)
 supported_single_arg_types = [bool, int, float, str]
 
 
-def _lex(text: Union[str, List[str]]) -> Iterable[str]:
+def _lex(text: Union[str, Union[List[str], str]]) -> Iterable[str]:
     """Returns a whitespace-delimited list of strings
     from the given text argument
     """
