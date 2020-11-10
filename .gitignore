@@ -2,3 +2,6 @@ env
 __pycache__
 test_script.åy
 notes.md
+testfile
+run_tests.py
+tests.py
