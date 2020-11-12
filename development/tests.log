@@ -1,1 +1,8 @@
-Date: 2020-11-13 00:27:58.519266
+Date: 2020-11-13 00:47:05.454101
+
+Case [1]:
+> was given input: '-name frederik'
+> was given definitions: '{'name': <class 'str'>}'
+> returned with status 'True'
+> returned with parsed args: {'name': 'frederik'}
+0/1 Tests failed

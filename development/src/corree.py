@@ -170,14 +170,5 @@ def parse(itokens: str, a_args: Dict[str, any]) -> Tuple[bool, Dict[str, Any]]:
                         b_args[token.value].append(argument)
 
     
-    return b_args
+    return True, b_args
 
-if __name__ == "__main__":
-    wanted_args = {
-            "foods":str,
-            "names": str,
-            "files": [str, int],
-            "items": (str, int, str, str)
-    }
-    args = parse("-foods banana -names test guess -files a b c 1 2 3 -items my 2 toy ducks", wanted_args)
-    print(args)
