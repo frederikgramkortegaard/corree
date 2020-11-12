@@ -46,7 +46,7 @@ def lex(tokens: str) -> Generator[Token, None, bool]:
             yield Token(TokenType.argument, token)
 
 
-def validate_and_cast(token: str, caster: Union[Callable, List[Callable]]) -> Any:
+def validate_and_cast(token: str, caster: Union[Callable, List[Callable]]) -> Tuple[int, Any]:
     """ Tries to typecase a given string to a(ny) given type callable,
     returns the success state and the resulting typecast value
     """
@@ -63,7 +63,7 @@ def validate_and_cast(token: str, caster: Union[Callable, List[Callable]]) -> An
         except:
             continue
 
-    return token if success is True else False
+    return (success, token)
 
 
 def parse(itokens: str, a_args: Dict[str, any]) -> Tuple[bool, Dict[str, Any]]:
@@ -109,10 +109,10 @@ def parse(itokens: str, a_args: Dict[str, any]) -> Tuple[bool, Dict[str, Any]]:
                     logging.error(f"Flag: '{token.value}' expected an argument but none were given")
                     return FAULTY_OUTPUT
 
-                argument = validate_and_cast(new_token.value, a_args[token.value])
+                success, argument = validate_and_cast(new_token.value, a_args[token.value])
              
                 # Given argument cannot be cast to its expected type
-                if argument is False:
+                if success is False:
                     logging.error(f"Flag '{token.value}' received argument '{new_token.value}' which could not be cast to its expected type '{a_args[token.value]}'")
                     return FAULTY_OUTPUT
 
@@ -135,10 +135,10 @@ def parse(itokens: str, a_args: Dict[str, any]) -> Tuple[bool, Dict[str, Any]]:
                             logging.error(f"Flag '{token.value}' expected {len(a_args[token.value])} arguments but only {i + 1} were found")
                             return FAULTY_OUTPUT
 
-                        argument = validate_and_cast(new_token.value, a_args[token.value][i])
+                        success, argument = validate_and_cast(new_token.value, a_args[token.value][i])
                         
                         # Argument can not be cast to expected type
-                        if argument is False:
+                        if success is False:
                             logging.error(f"Flag '{token.value}' received argument '{new_token.value}' which could not be cast to its expected type '{a_args[token.value]}'")
                             return FAULTY_OUTPUT
                         
@@ -160,10 +160,10 @@ def parse(itokens: str, a_args: Dict[str, any]) -> Tuple[bool, Dict[str, Any]]:
                             logging.info(f"flag '{token.value}' found no more args")
                             break
 
-                        argument = validate_and_cast(new_token.value, [int, float, str])
+                        success, argument = validate_and_cast(new_token.value, [int, float, str])
                         
                         # Argument can not be cast to expected type
-                        if argument is False:
+                        if success is False:
                             logging.error(f"Flag '{token.value}' received argument '{new_token.value}' which could not be cast to its expected type '{a_args[token.value]}'")
                             return FAULTY_OUTPUT
 

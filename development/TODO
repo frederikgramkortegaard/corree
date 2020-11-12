@@ -1,3 +1,0 @@
-eat does not actually mutate the list of tokens, after every eat it needs to remove the first element, but this does not happen in the right scope??
-
-
