@@ -27,18 +27,24 @@ if __name__ == "__main__":
 
     for enum, case in enumerate(cases):
         logging.info(f"Running test case #[{enum + 1}]")
-        try:
-            success, args = corree.parse(case.input, case.definitions)
-            logging.info("> Test succeeded")
-        except Exception as e:
-            logging.warning("> Test failed", e)
+        success, args = corree.parse(case.input, case.definitions)
+
+        if success != case.success or args != case.output:
+            logging.warning("> Test failed")
             failed += 1
-            pass
+        else:
+
+            logging.info("> Test succeeded")
 
         log.write(f"Case [{enum + 1}]:\n> was given input: '{case.input}'\n> was given definitions: '{case.definitions}'\n> returned with status '{success}'\n> returned with parsed args: {args}\n")
 
     log.write(f"{failed}/{len(cases)} Tests failed")
+    
     logging.info(f"Finished testing using [{len(cases)}] test cases")
-    logging.info(f"{failed} out of {len(cases)} cases were not successful") 
+    if failed != 0:
+        logging.info(f"{failed} out of {len(cases)} cases were not successful, see tests.log for more information") 
+    else:
+        logging.info("All tests were successful")
     log.close()
 
+    print(failed == 0)

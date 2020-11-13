@@ -27,8 +27,12 @@ def lex(tokens: str) -> Generator[Token, None, bool]:
 
     offset: int = 0
     tokens = re.findall(regex_lexing_pattern, tokens)
-    
+
+    # Ignore empty tokens
     for token in tokens[::2]:
+        token = token.strip()
+        if token.isspace() or token == '':
+            continue
 
         # Token is a flag
         if token.startswith('-'):
