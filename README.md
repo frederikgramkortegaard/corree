@@ -18,12 +18,12 @@ import corree
 # Declare wanted flags, args and types
 declared_args = {
     "age": float,
-    "name": str,
-    "foods": [str],
+    "name": str,            # single types indicate an argument of said type
+    "foods": [str],         # [] indicates 0 .. n arguments of any type specified inside the brackets
     "numbers": [int],
-    "domain-name":str,
-    "likes-cake": bool,
-    "IP-PORT":  (str, int),
+    "domain-name":str, 
+    "likes-cake": bool,     # bool specifies and argument that takes no arguments, just the flag itself.
+    "IP-PORT":  (str, int), # () indicates that both the number and order of types are _required_ for runtime
 },
 
 # This would be sys.argv[1:] usually, the parser handles
