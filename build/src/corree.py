@@ -42,7 +42,6 @@ def lex(tokens: str) -> Generator[Token, None, bool]:
                 offset += 1
             
             token = token[offset:]
-                
             yield Token(TokenType.flag, token)
 
         # Token is an argument
@@ -72,7 +71,7 @@ def validate_and_cast(token: str, caster: Union[Callable, List[Callable]]) -> Tu
 
 def parse(itokens: str, a_args: Dict[str, any]) -> Tuple[bool, Dict[str, Any]]:
     """ """
-    
+
     global tokens
     tokens = list(lex(itokens))
 
@@ -85,7 +84,18 @@ def parse(itokens: str, a_args: Dict[str, any]) -> Tuple[bool, Dict[str, Any]]:
 
         return out
 
+
     b_args = dict()
+
+    # Fill Defaults
+    for key, value in a_args.items():
+        if type(value) == list:
+            b_args[key] = list()
+        elif value == bool:
+            b_args[key] = False
+        else:
+            b_args[key] = None
+
 
     while (token := eat(tokens)) is not None:
 
@@ -173,6 +183,5 @@ def parse(itokens: str, a_args: Dict[str, any]) -> Tuple[bool, Dict[str, Any]]:
 
                         b_args[token.value].append(argument)
 
-    
     return True, b_args
 
