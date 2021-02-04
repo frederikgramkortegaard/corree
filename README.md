@@ -15,15 +15,16 @@ However simple it is, this parser _does_ support type validation. Combine this w
 ```python
 """ corree Usecase Example """
 import corree
+
 # Declare wanted flags, args and types
 declared_args = {
     "age": float,
     "name": str,            # A single argument of the specified type
     "foods": [str],         # 0 .. n arguments of any type specified inside the brackets
     "numbers": [int],
-    "domain-name":str, 
+    "domain-name": str, 
     "likes-cake": bool,     # bool, takes no arguments except the flag itself.
-    "IP-PORT":  (str, int), # () both the count and order of types are **required** for runtime
+    "IP-PORT":  (str, int), # () both the count and order of types are required for successful parsing
 },
 
 # This would be sys.argv[1:] usually, the parser handles
