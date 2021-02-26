@@ -24,7 +24,7 @@ declared_args = {
     "numbers": [int],
     "domain-name": str, 
     "likes-cake": bool,     # bool, takes no arguments except the flag itself.
-    "IP-PORT":  (str, int), # () both the count and order of types are required for successful parsing
+    "IP-PORT":  (str, int), # both the count and order of types are required for successful parsing
 },
 
 # This would be sys.argv[1:] usually, the parser handles
