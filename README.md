@@ -19,13 +19,15 @@ import corree
 # Declare wanted flags, args and types
 declared_args = {
     "age": float,
-    "name": str,            # A single argument of the specified type
+    "name": str,            # A single argument of the specified type (place inside bracket for required arguments)
     "foods": [str],         # 0 .. n arguments of any type specified inside the brackets
     "numbers": [int],
     "domain-name": str, 
     "likes-cake": bool,     # bool, takes no arguments except the flag itself.
     "IP-PORT":  (str, int), # both the count and order of types are required for successful parsing
 },
+
+
 
 # This would be sys.argv[1:] usually, the parser handles
 # both strings as well as lists of strings as input
@@ -48,3 +50,6 @@ True,
     'likes-cake': True,
     'IP-PORT': ("192.0.0.1", 8080)
 }
+
+@NOTE: Unspecified optional arguments won't appear in the result dictionary,
+you should check if the key exists for non-required arguments.
