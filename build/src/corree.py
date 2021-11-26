@@ -93,8 +93,6 @@ def parse(itokens: str, a_args: Dict[str, any]) -> Tuple[bool, Dict[str, Any]]:
             b_args[key] = list()
         elif value == bool:
             b_args[key] = False
-        else:
-            b_args[key] = None
 
 
     while (token := eat(tokens)) is not None:
