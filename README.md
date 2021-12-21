@@ -50,6 +50,7 @@ True,
     'likes-cake': True,
     'IP-PORT': ("192.0.0.1", 8080)
 }
+```
 
-@NOTE: Unspecified optional arguments won't appear in the result dictionary,
+Unspecified optional arguments won't appear in the result dictionary,
 you should check if the key exists for non-required arguments.
